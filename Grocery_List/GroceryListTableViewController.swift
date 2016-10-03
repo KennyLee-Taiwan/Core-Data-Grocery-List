@@ -29,22 +29,35 @@ class GroceryListTableViewController: UITableViewController {
     }
 
     
+    //Implement AlertController with "ADD" and "Cancel" buttons
     @IBAction func addAction(_ sender: UIBarButtonItem) {
         
         let alertController = UIAlertController(title: "Grocery Item", message: "What's to buy now?", preferredStyle: UIAlertControllerStyle.alert)
         
+        
         alertController.addTextField { (textField:UITextField) in
+        }
+        
+        
+        let addAction = UIAlertAction(title: "ADD", style: UIAlertActionStyle.default) { [weak self](action: UIAlertAction) in
             
-            
-            
+            let textField = alertController.textFields?.first
+            self?.groceries.append(textField!.text!)
+            self?.tableView.reloadData()
             
         }
         
-        let addAction = UIAlertAction(title: "ADD", style: UIAlertActionStyle.default) { (action: UIAlertAction) in
-            
-            let textField = alertController.textFields?.first
-            
-        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler: nil)
+        
+        
+        alertController.addAction(addAction)
+        alertController.addAction(cancelAction)
+        
+        
+        //Add the controller to the view (So that it's clickable and has responses)
+        present(alertController, animated: true, completion: nil)
+        
+        
         
     }
     
@@ -62,15 +75,18 @@ class GroceryListTableViewController: UITableViewController {
         return groceries.count
     }
 
-    /*
+    
+    // Display content of the array
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "groceryCell", for: indexPath)
 
         // Configure the cell...
+        
+        cell.textLabel?.text = self.groceries[indexPath.row]
 
         return cell
     }
-    */
+    
 
     /*
     // Override to support conditional editing of the table view.
